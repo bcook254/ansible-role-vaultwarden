@@ -1,0 +1,110 @@
+---
+- name: Ensure vaultwarden group exists.
+  ansible.builtin.group:
+    name: "{{ vaultwarden_group }}"
+    state: present
+    system: true
+
+- name: Ensure vaultwarden user exists.
+  ansible.builtin.user:
+    name: "{{ vaultwarden_user }}"
+    groups: "{{ vaultwarden_group }}"
+    append: true
+    home: "{{ vaultwarden_home_dir }}"
+    shell: /usr/sbin/nologin
+    system: true
+
+- name: Check if Vaultwarden is already installed.
+  ansible.builtin.command:
+    cmd: "{{ vaultwarden_bin_dir }}/vaultwarden --version"
+  register: __vaultwarden_version_result
+  ignore_errors: true
+  changed_when: false
+
+- name: Install Vaultwarden (Web).
+  ansible.builtin.get_url:
+    url: "{{ vaultwarden_url }}"
+    checksum: "{{ vaultwarden_url_checksum | default(omit) }}"
+    dest: "{{ vaultwarden_bin_dir }}/vaultwarden"
+    owner: "{{ vaultwarden_user }}"
+    group: "{{ vaultwarden_group }}"
+    mode: 0755
+    force: "{{ vaultwarden_url_checksum is not defined }}"
+  notify: restart vaultwarden
+  when:
+    - __vaultwarden_version_result is failed
+    - vaultwarden_url is defined
+
+- name: Install Vaultwarden (Local).
+  ansible.builtin.copy:
+    src: "{{ vaultwarden_file }}"
+    dest: "{{ vaultwarden_bin_dir }}/vaultwarden"
+    owner: "{{ vaultwarden_user }}"
+    group: "{{ vaultwarden_group }}"
+    mode: 0755
+    force: true
+  notify: restart vaultwarden
+  when:
+    - __vaultwarden_version_result is failed
+    - vaultwarden_url is not defined
+    - vaultwarden_file is defined
+
+- name: Ensure Vaultwarden data directory exists.
+  ansible.builtin.file:
+    path: "{{ vaultwarden_data_dir }}"
+    owner: "{{ vaultwarden_user }}"
+    group: "{{ vaultwarden_group }}"
+    state: directory
+    mode: 0700
+
+- name: Ensure Vaultwarden config directory exists.
+  ansible.builtin.file:
+    path: "{{ vaultwarden_config_dir }}"
+    owner: "{{ vaultwarden_user }}"
+    group: "{{ vaultwarden_group }}"
+    state: directory
+    mode: 0755
+  when: vaultwarden_manage_config
+
+- name: Check if Vaultwarden web-vault is already installed.
+  ansible.builtin.slurp:
+    src: "{{ vaultwarden_web_vault_dir }}/vw-version.json"
+  ignore_errors: true
+  register: __vaultwarden_web_vault_version_result
+  when: vaultwarden_enable_web_vault
+
+- name: Set vaultwarden_current_web_vault_version
+  ansible.builtin.set_fact:
+    __vaultwarden_current_web_vault_version: "{{ __vaultwarden_web_vault_version_result.content | b64decode | from_json | json_query(jmesquery) }}"
+  when: __vaultwarden_web_vault_version_result is succeeded
+  vars:
+    jmesquery: 'version'
+
+- name: Remove old Vaultwarden web-vault.
+  ansible.builtin.file:
+    path: "{{ vaultwarden_web_vault_dir }}"
+    state: absent
+  when: __vaultwarden_web_vault_version_result is succeeded
+        and vaultwarden_web_vault_version != __vaultwarden_current_web_vault_version
+
+- name: Ensure Vaultwarden web-vault directory exists.
+  ansible.builtin.file:
+    path: "{{ vaultwarden_web_vault_dir }}"
+    owner: "{{ vaultwarden_user }}"
+    group: "{{ vaultwarden_group }}"
+    state: directory
+    mode: 0755
+  when: vaultwarden_enable_web_vault
+
+- name: Download Vaultwarden web-vault.
+  ansible.builtin.unarchive:
+    src: "https://github.com/dani-garcia/bw_web_builds/releases/download/v{{ vaultwarden_web_vault_version }}/bw_web_v{{ vaultwarden_web_vault_version }}.tar.gz"
+    dest: "{{ vaultwarden_web_vault_dir }}"
+    owner: "{{ vaultwarden_user }}"
+    group: "{{ vaultwarden_group }}"
+    remote_src: true
+    extra_opts: ['--strip-components=1']
+  when:
+    - vaultwarden_enable_web_vault
+    - __vaultwarden_web_vault_version_result is failed
+      or vaultwarden_web_vault_version != __vaultwarden_current_web_vault_version

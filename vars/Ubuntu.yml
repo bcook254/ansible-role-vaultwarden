@@ -1,0 +1,12 @@
+---
+__vaultwarden_home_dir: /var/lib/vaultwarden
+__vaultwarden_data_dir: "{{ vaultwarden_home_dir }}/data"
+__vaultwarden_bin_dir: /usr/local/bin
+__vaultwarden_web_vault_dir: "{{ vaultwarden_home_dir }}/web-vault"
+__vaultwarden_config_dir: /etc/vaultwarden
+__vaultwarden_packages:
+  - openssl
+  - ca-certificates
+  - curl
+  - libmariadb-dev-compat
+  - libpq5

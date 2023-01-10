@@ -1,0 +1,10 @@
+---
+- name: Converge
+  hosts: all
+
+  vars:
+    vaultwarden_file: "{{ 'molecule/vaultwarden-openssl1' if ('openssl1' in group_names) else 'molecule/vaultwarden' }}"
+    vaultwarden_manage_config: true
+ 
+  roles:
+    - role: bcook254.vaultwarden

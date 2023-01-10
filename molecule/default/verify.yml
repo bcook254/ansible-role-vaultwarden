@@ -1,0 +1,30 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+
+  tasks:
+  - name: Check if Vaultwarden is installed.
+    ansible.builtin.stat:
+      path: /usr/local/bin/vaultwarden
+  
+  - name: Verify correct version of Vaultwarden has been installed.
+    ansible.builtin.command: vaultwarden --version
+    args:
+      chdir: /usr/local/bin
+    changed_when: false
+    register: __vaultwarden_version
+    failed_when: __vaultwarden_version is not search('1.27.0')
+
+  - name: Check if Vaultwarden web-vault is installed.
+    ansible.builtin.stat:
+      path: /var/lib/vaultwarden/web-vault
+  
+  - name: Check if vaultwarden.service is started
+    ansible.builtin.service:
+      name: vaultwarden
+      state: started
+      enabled: true
+    check_mode: true
+    register: service
+    failed_when: (service is changed) or (service is failed)      

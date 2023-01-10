@@ -1,0 +1,10 @@
+---
+- name: Configure environment variables.
+  ansible.builtin.template:
+    src: "env.j2"
+    dest: "{{ vaultwarden_config_path }}"
+    owner: "{{ vaultwarden_user }}"
+    group: "{{ vaultwarden_group }}"
+    mode: 0600
+  notify: restart vaultwarden
+  when: vaultwarden_manage_config

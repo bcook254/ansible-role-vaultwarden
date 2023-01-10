@@ -1,0 +1,28 @@
+---
+- name: Assertions
+  ansible.builtin.include_tasks: assertions.yml
+
+# Variable configuration.
+- name: Variables
+  ansible.builtin.include_tasks: variables.yml
+
+# Setup/install tasks.
+- name: Setup (Debian)
+  ansible.builtin.include_tasks: setup-Debian.yml
+  when: ansible_os_family == 'Debian'
+
+- name: Setup (RedHat)
+  ansible.builtin.include_tasks: setup-RedHat.yml
+  when: ansible_os_family == 'RedHat'
+
+- name: Install
+  ansible.builtin.include_tasks: install.yml
+
+- name: Configure
+  ansible.builtin.include_tasks: configure.yml
+
+- name: Ensure Vaultwarden is started and enabled on boot.
+  ansible.builtin.service:
+    name: "{{ vaultwarden_daemon }}"
+    state: started
+    enabled: true

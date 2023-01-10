@@ -1,0 +1,26 @@
+---
+- name: Prepare
+  hosts: all
+
+  roles:
+    - name: 0x0I.systemd
+      vars:
+        unit_config:
+          - name: vaultwarden
+            enabled: yes
+            state: started
+            Unit:
+              Description: Vaultwarden - An unofficial Bitwarden compatible server
+              After: network.target
+            Service:
+              Type: simple
+              Restart: on-failure
+              RestartSec: 2s
+              TimeoutStopSec: 0
+              User: vaultwarden
+              Group: vaultwarden
+              EnvironmentFile: "/etc/vaultwarden/vaultwarden.env"
+              WorkingDirectory: "/var/lib/vaultwarden"
+              ExecStart: "/usr/local/bin/vaultwarden"
+            Install:
+              WantedBy: multi-user.target

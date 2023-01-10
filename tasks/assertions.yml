@@ -1,0 +1,7 @@
+---
+- name: Check either vaultwarden_url or vaultwarden_file is set.
+  ansible.builtin.assert:
+    that:
+      - vaultwarden_url is defined or vaultwarden_file is defined
+    fail_msg: "One of 'vaultwarden_url' or 'vaultwarden_file' must be set."
+    quiet: true

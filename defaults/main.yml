@@ -1,0 +1,8 @@
+---
+vaultwarden_user: vaultwarden
+vaultwarden_group: vaultwarden
+vaultwarden_daemon: vaultwarden
+vaultwarden_database_name: vaultwarden
+vaultwarden_web_vault_version: 2022.12.0
+vaultwarden_enable_web_vault: true
+vaultwarden_manage_config: false
