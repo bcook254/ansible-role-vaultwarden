@@ -8,8 +8,7 @@
 - name: Ensure vaultwarden user exists.
   ansible.builtin.user:
     name: "{{ vaultwarden_user }}"
-    groups: "{{ vaultwarden_group }}"
-    append: true
+    group: "{{ vaultwarden_group }}"
     home: "{{ vaultwarden_home_dir }}"
     shell: /usr/sbin/nologin
     system: true
