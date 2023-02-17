@@ -3,4 +3,4 @@
 *.pyc
 .cache
 
-molecule/vaultwarden*
+.vscode/
