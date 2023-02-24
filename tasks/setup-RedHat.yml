@@ -3,3 +3,5 @@
   ansible.builtin.dnf:
     name: "{{ vaultwarden_packages }}"
     state: present
+    enablerepo:
+      - crb

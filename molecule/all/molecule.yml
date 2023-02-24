@@ -129,7 +129,14 @@ provisioner:
   inventory:
     group_vars:
       openssl1:
-        vaultwarden_file: molecule/vaultwarden-openssl1
+    host_vars:
+      rockylinux9:
+        vaultwarden_packages:
+          - openssl
+          - ca-certificates
+          - curl-minimal
+          - mariadb-devel
+          - libpq
   config_options:
     defaults:
       interpreter_python: auto_silent
