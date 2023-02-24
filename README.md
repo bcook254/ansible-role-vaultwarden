@@ -27,6 +27,10 @@ Location of the Vaultwarden binary to be installed. __At least one of these must
 
 When using `vaultwarden_url`, an optional checksum may be given to skip downloading the file when it has not changed. This must follow the format of the [ansible.builtin.get_url module checksum parameter](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/get_url_module.html#parameter-checksum).
 
+    vaultwarden_url_headers:
+
+When using `vaultwarden_url`, an optional dictionary of headers may be given to send with the download request. This must follow the format of the [ansible.builtin.get_url module headers parameter](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/get_url_module.html#parameter-headers).
+
     vaultwarden_enable_web_vault: true
 
 When enabled, this role will also download the patched web-vault files.
