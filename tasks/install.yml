@@ -24,6 +24,7 @@
   ansible.builtin.get_url:
     url: "{{ vaultwarden_url }}"
     checksum: "{{ vaultwarden_url_checksum | default(omit) }}"
+    headers: "{{ vaultwarden_url_headers | default(omit) }}"
     dest: "{{ vaultwarden_bin_dir }}/vaultwarden"
     owner: "{{ vaultwarden_user }}"
     group: "{{ vaultwarden_group }}"
