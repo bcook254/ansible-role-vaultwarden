@@ -19,3 +19,12 @@
   - name: Check if Vaultwarden web-vault is installed.
     ansible.builtin.stat:
       path: /var/lib/vaultwarden/web-vault
+
+  - name: Check if vaultwarden.service is started
+    ansible.builtin.service:
+      name: vaultwarden
+      state: started
+      enabled: true
+    check_mode: true
+    register: service
+    failed_when: (service is changed) or (service is failed)  
