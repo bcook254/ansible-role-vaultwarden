@@ -32,10 +32,8 @@ platforms:
       - SYS_ADMIN
     cgroupns_mode: host
     pre_build_image: true
-  - name: ubuntu1804
-    groups:
-      - openssl1
-    image: docker.io/geerlingguy/docker-ubuntu1804-ansible
+  - name: debian12
+    image: docker.io/geerlingguy/docker-debian12-ansible
     command: ${MOLECULE_DOCKER_COMMAND:-""}
     tmpfs:
       - /run
@@ -74,6 +72,18 @@ platforms:
       - SYS_ADMIN
     cgroupns_mode: host
     pre_build_image: true
+  - name: fedora38
+    image: docker.io/geerlingguy/docker-fedora38-ansible
+    command: ${MOLECULE_DOCKER_COMMAND:-""}
+    tmpfs:
+      - /run
+      - /tmp
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    capabilities:
+      - SYS_ADMIN
+    cgroupns_mode: host
+    pre_build_image: true
   - name: fedora37
     image: docker.io/geerlingguy/docker-fedora37-ansible
     command: ${MOLECULE_DOCKER_COMMAND:-""}
@@ -86,8 +96,8 @@ platforms:
       - SYS_ADMIN
     cgroupns_mode: host
     pre_build_image: true
-  - name: fedora36
-    image: docker.io/geerlingguy/docker-fedora36-ansible
+  - name: centosstream9
+    image: ghcr.io/bcook254/docker-centosstream9-ansible
     command: ${MOLECULE_DOCKER_COMMAND:-""}
     tmpfs:
       - /run
@@ -98,22 +108,10 @@ platforms:
       - SYS_ADMIN
     cgroupns_mode: host
     pre_build_image: true
-  - name: rockylinux9
-    image: docker.io/geerlingguy/docker-rockylinux9-ansible
-    command: ${MOLECULE_DOCKER_COMMAND:-""}
-    tmpfs:
-      - /run
-      - /tmp
-    volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
-    capabilities:
-      - SYS_ADMIN
-    cgroupns_mode: host
-    pre_build_image: true
-  - name: rockylinux8
+  - name: centosstream8
     groups:
       - openssl1
-    image: docker.io/geerlingguy/docker-rockylinux8-ansible
+    image: ghcr.io/bcook254/docker-centosstream8-ansible
     command: ${MOLECULE_DOCKER_COMMAND:-""}
     tmpfs:
       - /run
@@ -130,7 +128,7 @@ provisioner:
     group_vars:
       openssl1:
     host_vars:
-      rockylinux9:
+      centosstream9:
         vaultwarden_packages:
           - openssl
           - ca-certificates
