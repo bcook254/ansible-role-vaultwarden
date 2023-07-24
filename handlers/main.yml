@@ -1,5 +1,5 @@
 ---
-- name: restart vaultwarden
+- name: restart vaultwarden # noqa name[casing]
   ansible.builtin.service:
     name: "{{ vaultwarden_daemon }}"
     state: restarted
