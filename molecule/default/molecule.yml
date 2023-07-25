@@ -9,7 +9,7 @@ platforms:
   - name: ${MOLECULE_DISTRO:-ubuntu2204}
     groups:
       - ${MOLECULE_OPENSSL:-openssl3}
-    image: ${MOLECULE_IMAGE:-docker.io/geerlingguy/docker-${MOLECULE_DISTRO:-ubuntu2204}-ansible:latest} 
+    image: docker.io/geerlingguy/docker-${MOLECULE_DISTRO:-ubuntu2204}-ansible:latest
     command: ${MOLECULE_DOCKER_COMMAND:-""}
     tmpfs:
       - /run
