@@ -6,9 +6,6 @@ Installs Vaultwarden on Linux machines.
 Requirements
 ------------
 
-Python modules:
-  - jmespath
-
 Permission to:
   - Install dependency packages
   - Create or modify users/groups

@@ -13,13 +13,6 @@
     shell: /usr/sbin/nologin
     system: true
 
-- name: Check if Vaultwarden is already installed.
-  ansible.builtin.command:
-    cmd: "{{ vaultwarden_bin_dir }}/vaultwarden --version"
-  register: __vaultwarden_version_result
-  ignore_errors: true
-  changed_when: false
-
 - name: Install Vaultwarden (Web).
   ansible.builtin.get_url:
     url: "{{ vaultwarden_url }}"
@@ -31,7 +24,8 @@
     mode: 0755
     force: "{{ vaultwarden_url_checksum is not defined }}"
   notify: restart vaultwarden
-  when: __vaultwarden_version_result is failed or vaultwarden_url is defined
+  when:
+    - vaultwarden_url is defined
 
 - name: Install Vaultwarden (Local).
   ansible.builtin.copy:
@@ -43,8 +37,7 @@
     force: true
   notify: restart vaultwarden
   when:
-    - __vaultwarden_version_result is failed or vaultwarden_file is defined
-    - vaultwarden_url is not defined
+    - vaultwarden_file is defined
 
 - name: Ensure Vaultwarden data directory exists.
   ansible.builtin.file:
@@ -70,19 +63,18 @@
   register: __vaultwarden_web_vault_version_result
   when: vaultwarden_enable_web_vault
 
-- name: Set vaultwarden_current_web_vault_version
+- name: Set vaultwarden_current_web_vault_version.
   ansible.builtin.set_fact:
-    __vaultwarden_current_web_vault_version: "{{ __vaultwarden_web_vault_version_result.content | b64decode | from_json | json_query(jmesquery) }}"
+    __vaultwarden_current_web_vault_version: "{{ __vaultwarden_web_vault_version_result.content | b64decode }}"
   when: __vaultwarden_web_vault_version_result is succeeded
-  vars:
-    jmesquery: 'version'
 
 - name: Remove old Vaultwarden web-vault.
   ansible.builtin.file:
     path: "{{ vaultwarden_web_vault_dir }}"
     state: absent
-  when: __vaultwarden_web_vault_version_result is succeeded
-        and vaultwarden_web_vault_version != __vaultwarden_current_web_vault_version
+  when:
+    - __vaultwarden_web_vault_version_result is succeeded
+    - __vaultwarden_current_web_vault_version is not search(vaultwarden_web_vault_version)
 
 - name: Ensure Vaultwarden web-vault directory exists.
   ansible.builtin.file:
@@ -104,4 +96,4 @@
   when:
     - vaultwarden_enable_web_vault
     - __vaultwarden_web_vault_version_result is failed
-      or vaultwarden_web_vault_version != __vaultwarden_current_web_vault_version
+      or __vaultwarden_current_web_vault_version is not search(vaultwarden_web_vault_version)
