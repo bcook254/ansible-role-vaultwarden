@@ -14,16 +14,15 @@ galaxy_info:
   platforms:
     - name: EL
       versions:
-        - 8
         - 9
     - name: Fedora
       versions:
-        - 36
         - 37
+        - 38
     - name: Debian
       versions:
-        - buster
         - bullseye
+        - bookworm
     - name: Ubuntu
       versions:
         - bionic
