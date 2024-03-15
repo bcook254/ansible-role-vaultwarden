@@ -32,7 +32,7 @@ When using `vaultwarden_url`, an optional dictionary of headers may be given to 
 
 When enabled, this role will also download the patched web-vault files.
 
-    vaultwarden_web_vault_version: 2023.5.0
+    vaultwarden_web_vault_version: 2023.10.0
 
 The version of Vaultwarden Web Vault to be installed.
 
