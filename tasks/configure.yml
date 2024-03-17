@@ -2,7 +2,7 @@
 - name: Configure environment variables.
   ansible.builtin.template:
     src: "env.j2"
-    dest: "{{ vaultwarden_config_path }}"
+    dest: "{{ vaultwarden_config_file }}"
     owner: "{{ vaultwarden_user }}"
     group: "{{ vaultwarden_group }}"
     mode: 0600

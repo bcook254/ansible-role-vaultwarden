@@ -1,47 +1,13 @@
 ---
 # Variable configuration.
 - name: Include OS-specific variables (Debian).
-  ansible.builtin.include_vars: "{{ ansible_distribution }}.yml"
+  ansible.builtin.include_vars: "{{ ansible_os_family }}.yml"
   when: ansible_os_family == 'Debian'
 
 - name: Include OS-specific variables (RedHat).
   ansible.builtin.include_vars: "{{ ansible_os_family }}.yml"
   when:
     - ansible_os_family == 'RedHat'
-    - ansible_distribution != 'Fedora'
-
-- name: Include OS-specific variables (Fedora).
-  ansible.builtin.include_vars: "{{ ansible_distribution }}.yml"
-  when: ansible_distribution == 'Fedora'
-
-- name: Define vaultwarden_bin_dir.
-  ansible.builtin.set_fact:
-    vaultwarden_bin_dir: "{{ __vaultwarden_bin_dir }}"
-  when: vaultwarden_bin_dir is not defined
-
-- name: Define vaultwarden_home_dir.
-  ansible.builtin.set_fact:
-    vaultwarden_home_dir: "{{ __vaultwarden_home_dir }}"
-  when: vaultwarden_home_dir is not defined
-
-- name: Define vaultwarden_data_dir.
-  ansible.builtin.set_fact:
-    vaultwarden_data_dir: "{{ __vaultwarden_data_dir }}"
-  when: vaultwarden_data_dir is not defined
-
-- name: Define vaultwarden_config_dir.
-  ansible.builtin.set_fact:
-    vaultwarden_config_dir: "{{ __vaultwarden_config_dir }}"
-  when: vaultwarden_config_dir is not defined
-
-- name: Define vaultwarden_config_path.
-  ansible.builtin.set_fact:
-    vaultwarden_config_path: "{{ vaultwarden_config_dir }}/vaultwarden.env"
-
-- name: Define vaultwarden_web_vault_dir.
-  ansible.builtin.set_fact:
-    vaultwarden_web_vault_dir: "{{ __vaultwarden_web_vault_dir }}"
-  when: vaultwarden_web_vault_dir is not defined
 
 - name: Define vaultwarden_packages.
   ansible.builtin.set_fact:
