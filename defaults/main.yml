@@ -2,6 +2,13 @@
 vaultwarden_user: vaultwarden
 vaultwarden_group: vaultwarden
 vaultwarden_daemon: vaultwarden
+vaultwarden_bin_dir: /usr/local/bin
+vaultwarden_bin_file: "{{ vaultwarden_bin_dir }}/vaultwarden"
+vaultwarden_home_dir: /var/lib/vaultwarden
+vaultwarden_data_dir: "{{ vaultwarden_home_dir }}/data"
+vaultwarden_web_vault_dir: "{{ vaultwarden_home_dir }}/web-vault"
+vaultwarden_config_dir: /etc/vaultwarden
+vaultwarden_config_file: "{{ vaultwarden_config_dir }}/vaultwarden.env"
 vaultwarden_database_name: vaultwarden
 vaultwarden_web_vault_version: 2023.10.0
 vaultwarden_enable_web_vault: true

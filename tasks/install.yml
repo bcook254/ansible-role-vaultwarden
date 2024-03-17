@@ -18,7 +18,7 @@
     url: "{{ vaultwarden_url }}"
     checksum: "{{ vaultwarden_url_checksum | default(omit) }}"
     headers: "{{ vaultwarden_url_headers | default(omit) }}"
-    dest: "{{ vaultwarden_bin_dir }}/vaultwarden"
+    dest: "{{ vaultwarden_bin_file }}"
     owner: "{{ vaultwarden_user }}"
     group: "{{ vaultwarden_group }}"
     mode: 0755
@@ -30,7 +30,7 @@
 - name: Install Vaultwarden (Local).
   ansible.builtin.copy:
     src: "{{ vaultwarden_file }}"
-    dest: "{{ vaultwarden_bin_dir }}/vaultwarden"
+    dest: "{{ vaultwarden_bin_file }}"
     owner: "{{ vaultwarden_user }}"
     group: "{{ vaultwarden_group }}"
     mode: 0755

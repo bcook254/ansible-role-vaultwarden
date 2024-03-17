@@ -7,8 +7,6 @@ driver:
   name: podman
 platforms:
   - name: ${MOLECULE_DISTRO:-ubuntu2204}
-    groups:
-      - ${MOLECULE_OPENSSL:-openssl3}
     image: docker.io/geerlingguy/docker-${MOLECULE_DISTRO:-ubuntu2204}-ansible:latest
     command: ${MOLECULE_DOCKER_COMMAND:-""}
     tmpfs:
@@ -22,6 +20,10 @@ platforms:
     pre_build_image: true
 provisioner:
   name: ansible
+  inventory:
+    group_vars:
+      all:
+        vaultwarden_file: 'molecule/vaultwarden'
   config_options:
     defaults:
       interpreter_python: auto_silent
