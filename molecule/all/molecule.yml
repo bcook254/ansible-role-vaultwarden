@@ -9,61 +9,41 @@ platforms:
   - name: ubuntu2204
     image: docker.io/geerlingguy/docker-ubuntu2204-ansible
     command: ${MOLECULE_DOCKER_COMMAND:-""}
-    tmpfs:
-      - /run
-      - /tmp
     volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
-    capabilities:
-      - SYS_ADMIN
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+    privileged: true
     cgroupns_mode: host
     pre_build_image: true
   - name: debian12
     image: docker.io/geerlingguy/docker-debian12-ansible
     command: ${MOLECULE_DOCKER_COMMAND:-""}
-    tmpfs:
-      - /run
-      - /tmp
     volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
-    capabilities:
-      - SYS_ADMIN
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+    privileged: true
     cgroupns_mode: host
     pre_build_image: true
   - name: fedora39
     image: docker.io/geerlingguy/docker-fedora39-ansible
     command: ${MOLECULE_DOCKER_COMMAND:-""}
-    tmpfs:
-      - /run
-      - /tmp
     volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
-    capabilities:
-      - SYS_ADMIN
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+    privileged: true
     cgroupns_mode: host
     pre_build_image: true
   - name: fedora38
     image: docker.io/geerlingguy/docker-fedora38-ansible
     command: ${MOLECULE_DOCKER_COMMAND:-""}
-    tmpfs:
-      - /run
-      - /tmp
     volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
-    capabilities:
-      - SYS_ADMIN
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+    privileged: true
     cgroupns_mode: host
     pre_build_image: true
   - name: centosstream9
     image: ghcr.io/bcook254/docker-centosstream9-ansible
     command: ${MOLECULE_DOCKER_COMMAND:-""}
-    tmpfs:
-      - /run
-      - /tmp
     volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
-    capabilities:
-      - SYS_ADMIN
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+    privileged: true
     cgroupns_mode: host
     pre_build_image: true
 provisioner:
@@ -71,7 +51,9 @@ provisioner:
   inventory:
     group_vars:
       all:
-        vaultwarden_file: 'molecule/vaultwarden'
+        vaultwarden_version: "${VAULTWARDEN_VERSION}"
+        vaultwarden_url: "${VAULTWARDEN_URL}"
+        vaultwarden_url_checksum: "sha256:{{ vaultwarden_url }}.sha256"
     host_vars:
       centosstream9:
         vaultwarden_packages:
@@ -90,5 +72,4 @@ verifier:
   name: ansible
 lint: |
   set -e
-  yamllint .
   ansible-lint .

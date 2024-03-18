@@ -26,6 +26,7 @@
   notify: restart vaultwarden
   when:
     - vaultwarden_url is defined
+    - vaultwarden_url | length > 0
 
 - name: Install Vaultwarden (Local).
   ansible.builtin.copy:
@@ -38,6 +39,7 @@
   notify: restart vaultwarden
   when:
     - vaultwarden_file is defined
+    - vaultwarden_file | length > 0
 
 - name: Ensure Vaultwarden data directory exists.
   ansible.builtin.file:
