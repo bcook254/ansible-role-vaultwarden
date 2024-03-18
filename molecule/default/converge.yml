@@ -3,6 +3,7 @@
   hosts: all
 
   vars:
+    vaultwarden_file: "{{ None if (vaultwarden_url is defined and vaultwarden_url | length > 0) else 'molecule/vaultwarden' }}"
     vaultwarden_manage_config: true
  
   roles:

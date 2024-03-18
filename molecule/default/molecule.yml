@@ -9,13 +9,9 @@ platforms:
   - name: ${MOLECULE_DISTRO:-ubuntu2204}
     image: docker.io/geerlingguy/docker-${MOLECULE_DISTRO:-ubuntu2204}-ansible:latest
     command: ${MOLECULE_DOCKER_COMMAND:-""}
-    tmpfs:
-      - /run
-      - /tmp
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
-    capabilities:
-      - SYS_ADMIN
+    privileged: true
     cgroupns_mode: host
     pre_build_image: true
 provisioner:
@@ -23,7 +19,17 @@ provisioner:
   inventory:
     group_vars:
       all:
-        vaultwarden_file: 'molecule/vaultwarden'
+        vaultwarden_version: "${VAULTWARDEN_VERSION}"
+        vaultwarden_url: "${VAULTWARDEN_URL}"
+        vaultwarden_url_checksum: "sha256:{{ vaultwarden_url }}.sha256"
+    host_vars:
+      centosstream9:
+        vaultwarden_packages:
+          - openssl
+          - ca-certificates
+          - curl-minimal
+          - mariadb-devel
+          - libpq
   config_options:
     defaults:
       interpreter_python: auto_silent

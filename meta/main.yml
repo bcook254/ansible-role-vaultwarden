@@ -17,17 +17,15 @@ galaxy_info:
         - 9
     - name: Fedora
       versions:
-        - 37
         - 38
+        - 39
     - name: Debian
       versions:
-        - bullseye
         - bookworm
     - name: Ubuntu
       versions:
-        - bionic
-        - focal
         - jammy
   galaxy_tags:
     - vaultwarden
     - bitwardenrs
+    - bitwarden_rs
