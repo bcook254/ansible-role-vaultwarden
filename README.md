@@ -1,7 +1,7 @@
 Ansible Role: vaultwarden
 =========
 
-Installs Vaultwarden on Linux machines.
+Installs [Vaultwarden](https://github.com/dani-garcia/vaultwarden) on Linux machines.
 
 Requirements
 ------------
