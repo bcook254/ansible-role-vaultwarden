@@ -5,6 +5,11 @@ name: ci
   push:
     branches:
       - main
+    paths-ignore:
+      - 'meta/**'
+      - '.gitignore'
+      - 'LICENSE'
+      - 'README.md'
 
 defaults:
   run:
