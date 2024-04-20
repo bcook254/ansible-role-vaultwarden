@@ -1,0 +1,43 @@
+---
+dependency:
+  name: galaxy
+  options:
+    requirements-file: requirements.yml
+driver:
+  name: podman
+platforms:
+  - name: ${PLATFORM_NAME}
+    image: ${PLATFORM_IMAGE}
+    command: ${MOLECULE_DOCKER_COMMAND:-""}
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+    cgroupns_mode: host
+    privileged: true
+    pre_build_image: true
+provisioner:
+  inventory:
+    group_vars:
+      all:
+        vaultwarden_version: "${VAULTWARDEN_VERSION}"
+        vaultwarden_url: "${VAULTWARDEN_URL}"
+        vaultwarden_url_checksum: "sha256:{{ vaultwarden_url }}.sha256"
+    host_vars:
+      centosstream9:
+        vaultwarden_packages:
+          - openssl
+          - ca-certificates
+          - curl-minimal
+          - mariadb-devel
+          - libpq
+  name: ansible
+  config_options:
+    defaults:
+      interpreter_python: auto_silent
+      callbacks_enabled: yaml
+    ssh_connection:
+      pipelining: false
+verifier:
+  name: ansible
+lint: |
+  set -e
+  ansible-lint .
