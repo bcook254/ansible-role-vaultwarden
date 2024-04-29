@@ -19,12 +19,14 @@ galaxy_info:
       versions:
         - 38
         - 39
+        - 40
     - name: Debian
       versions:
         - bookworm
     - name: Ubuntu
       versions:
         - jammy
+        - noble
   galaxy_tags:
     - vaultwarden
     - bitwardenrs
