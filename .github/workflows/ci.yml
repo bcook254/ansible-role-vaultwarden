@@ -57,7 +57,7 @@ jobs:
         env:
           PLATFORM_NAME: ${{ matrix.platform.name }}
           PLATFORM_IMAGE: ${{ matrix.platform.image }}
-          VAULTWARDEN_VERSION: '1.30.5'
+          VAULTWARDEN_VERSION: '1.31.0'
           VAULTWARDEN_URL: ${{ secrets.VAULTWARDEN_URL }}
           PY_COLORS: '1'
           ANSIBLE_FORCE_COLOR: '1'
