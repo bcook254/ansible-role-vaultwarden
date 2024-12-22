@@ -14,7 +14,7 @@
       chdir: /usr/local/bin
     changed_when: false
     register: __vaultwarden_version
-    failed_when: __vaultwarden_version is not search(vaultwarden_version if vaultwarden_version | length > 0 else '1.32.2')
+    failed_when: __vaultwarden_version is not search(vaultwarden_version if vaultwarden_version | length > 0 else '1.32.7')
 
   - name: Check if Vaultwarden web-vault is installed.
     ansible.builtin.stat:
