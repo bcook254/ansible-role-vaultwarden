@@ -23,6 +23,13 @@ provisioner:
         vaultwarden_url: "${VAULTWARDEN_URL}"
         vaultwarden_url_checksum: "sha256:{{ vaultwarden_url }}.sha256"
     host_vars:
+      centosstream10:
+        vaultwarden_packages:
+          - openssl
+          - ca-certificates
+          - curl-minimal
+          - mariadb-devel
+          - libpq
       centosstream9:
         vaultwarden_packages:
           - openssl
