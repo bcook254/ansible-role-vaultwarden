@@ -37,6 +37,13 @@ provisioner:
           - curl-minimal
           - mariadb-devel
           - libpq
+      centosstream10:
+        vaultwarden_packages:
+          - openssl
+          - ca-certificates
+          - curl-minimal
+          - mariadb-devel
+          - libpq
   config_options:
     defaults:
       interpreter_python: auto_silent
